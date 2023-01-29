@@ -9,9 +9,11 @@
   "author": "Erik Frisk",
   "license": "ISC",
   "devDependencies": {
+    "@types/poisson-disk-sampling": "^2.2.1",
     "parcel": "^2.8.3"
   },
   "dependencies": {
+    "color2k": "^2.0.1",
     "normalize.css": "^8.0.1",
     "poisson-disk-sampling": "^2.3.1",
     "pts": "^0.11.3",
