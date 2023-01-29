@@ -1,0 +1,11 @@
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+  background-color: #ccc;
+}
+
+#canvas-wrapper {
+  width: 100vw;
+  height: 100vw;
+}
