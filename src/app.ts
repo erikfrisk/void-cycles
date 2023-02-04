@@ -73,7 +73,7 @@ space.add({
         squareIndex: getUniqueSquareIndex(animatedSquares),
         startTime,
         endTime: startTime + getRandomIntBetween(2 * animTime, 10 * 1000),
-        // color: COLORS[getRandomIntBetween(1, 4)],
+        color: COLORS[getRandomIntBetween(1, 4)],
         rotation: getRandomIntBetween(0, 3),
         opacity: rng(),
       };
@@ -89,7 +89,7 @@ space.add({
             squareIndex: getUniqueSquareIndex(animatedSquares),
             startTime,
             endTime: startTime + getRandomIntBetween(2 * animTime, 10 * 1000),
-            // color: COLORS[getRandomIntBetween(1, 4)],
+            color: COLORS[getRandomIntBetween(1, 4)],
             rotation: getRandomIntBetween(0, 3),
             opacity: rng(),
           };
@@ -102,40 +102,14 @@ space.add({
           square.scale([s, 1]);
         }
         if (time >= endTime - animTime) {
-          // const s = 1 - (1 / (1 - endAnimFraction)) * (t - endAnimFraction);
           const s = (endTime - time) / animTime;
           square.scale([s, 1], square.p2);
         }
         square.rotate2D((rotation * Math.PI) / 2, pCenter);
-        // form.fillOnly(color).polygon(square);
-        form.fillOnly(transparentize('white', 1 - opacity)).polygon(square);
+        form.fillOnly(transparentize(color, 1 - opacity)).polygon(square);
       }
     );
   },
 });
-
-// const tempo = new Tempo(60);
-
-// let squareIndex = getRandomIntBetween(0, NUM_SQUARES_X * NUM_SQUARES_Y - 1);
-// const everyFive = tempo.every(5);
-// everyFive.start((count) => {
-//   squareIndex = getRandomIntBetween(0, NUM_SQUARES_X * NUM_SQUARES_Y - 1);
-// }, 1000);
-// everyFive.progress((count, t) => {
-//   const square = squares[squareIndex].clone();
-//   const startAnimFraction = 0.2;
-//   const endAnimFraction = 0.8;
-//   if (t <= startAnimFraction) {
-//     square.scale([t * (1 / startAnimFraction), 1]);
-//   }
-//   if (t >= endAnimFraction) {
-//     const s = 1 - (1 / (1 - endAnimFraction)) * (t - endAnimFraction);
-//     square.scale([s, 1], square.p2);
-//   }
-
-//   form.fillOnly(COLORS[1]).polygon(square);
-// }, 1000);
-
-// space.add(tempo);
 
 space.play();
