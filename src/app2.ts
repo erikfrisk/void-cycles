@@ -94,7 +94,7 @@ space.add((time, ftime) => {
   form.fillOnly(COLORS[4]).point(p, getRandomBetween(10, 20), 'circle');
   // form.fillOnly('pink').point(pCircle, 10, 'circle');
 
-  form.strokeOnly(COLORS[1], 10).line(line);
+  // form.strokeOnly(COLORS[1], 10).line(line);
 });
 
 space.playOnce();
