@@ -16,11 +16,13 @@ import randomWords from 'random-words';
 import { transparentize } from 'color2k';
 
 // Todo:
+// [x] Make circles wiggle
+// [x] Possibly add fraying to the outer edges of circles (UPDATE: NO!)
 // [ ] Add query string param for turning off animation
 // [ ] Refactor features and make simple iterations more rare
-// [ ] Possibly add fraying to the outer edges of circles
 // [ ] Add fxhash seed
-// [ ] Make circles wiggle
+// [ ] Fix reload
+// [ ] Center canvas in window
 
 const [SEED] = randomWords(1);
 // const SEED = 'hello';
