@@ -10,7 +10,7 @@ const [SEED] = randomWords(1);
 // const SEED = 'hello';
 const COLORS = ['#130325', '#BE4B88', '#00A1D6', '#006A8E', '#D7C27D'];
 
-console.log(SEED);
+console.log('Seed:', SEED);
 const rng = seedrandom(SEED);
 
 const getRandomBetween = (min, max) => min + (max - min) * rng();
@@ -28,9 +28,9 @@ const getRandomLinesCircle = (space) => {
     space.width * gaussianRng(),
     space.height * gaussianRng()
   );
-  const radius = space.width / getRandomBetween(1, 5);
-  const N_LINES = getRandomIntBetween(10, 200);
-  const rotation = rng();
+  const radius = space.width / getRandomBetween(0.8, 5);
+  const N_LINES = getRandomIntBetween(100, 200);
+  const rotation = getRandomBetween(0.2, 0.27);
   return [...Array(N_LINES)].map((x, i) => {
     const l = Line.fromAngle(pCenter, i * ((2 * Math.PI) / N_LINES), radius);
     l[0] = l.centroid();
@@ -42,21 +42,25 @@ const getRandomLinesCircle = (space) => {
 space.add({
   start: (bound, space) => {},
   animate: (time, ftime, space) => {
-    const N_CIRCLES = getRandomIntBetween(3, 12);
+    const N_CIRCLES = getRandomIntBetween(3, 6);
     const circles = [...Array(N_CIRCLES)].map(() =>
       getRandomLinesCircle(space)
     );
-    // Render
+
     const col = [
       COLORS[getRandomIntBetween(1, 4)],
       COLORS[getRandomIntBetween(1, 4)],
     ];
-    const transparentizeFactor = getRandomBetween(0, 1);
+    const transparentizeFactor = getRandomBetween(0.2, 0.6);
+    console.log('transparentizeFactor', transparentizeFactor);
     circles.forEach((c) => {
       const _col = col[getRandomIntBetween(0, 1)];
       c.forEach((l) => {
         form
-          .strokeOnly(transparentize(_col, transparentizeFactor * rng()))
+          .strokeOnly(
+            transparentize(_col, transparentizeFactor * rng()),
+            space.width / 800
+          )
           .line(l);
       });
     });
