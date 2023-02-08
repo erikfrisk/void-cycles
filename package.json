@@ -1,5 +1,5 @@
 {
-  "name": "art-1",
+  "name": "empty-portals",
   "version": "1.0.0",
   "description": "",
   "scripts": {
@@ -9,16 +9,12 @@
   "author": "Erik Frisk",
   "license": "ISC",
   "devDependencies": {
-    "@types/poisson-disk-sampling": "^2.2.1",
     "parcel": "^2.8.3"
   },
   "dependencies": {
     "color2k": "^2.0.1",
     "normalize.css": "^8.0.1",
-    "poisson-disk-sampling": "^2.3.1",
     "pts": "^0.11.3",
-    "random-words": "^1.2.1",
-    "seedrandom": "^3.0.5",
-    "simplex-noise": "^4.0.1"
+    "seedrandom": "^3.0.5"
   }
 }

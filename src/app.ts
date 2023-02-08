@@ -12,7 +12,6 @@ import {
   Num,
 } from 'pts';
 import seedrandom from 'seedrandom';
-import randomWords from 'random-words';
 import { transparentize } from 'color2k';
 
 // Todo:
@@ -24,8 +23,8 @@ import { transparentize } from 'color2k';
 // [ ] Fix reload
 // [ ] Center canvas in window
 
-const [SEED] = randomWords(1);
-// const SEED = 'hello';
+const SEED = (window as any).fxhash;
+// const SEED = 'oozo2eYjpL8wbrVtHbfL9N8CEUaENiMqzLU6voWyCb9nVDK4Bru';
 const COLORS = ['#130325', '#BE4B88', '#00A1D6', '#006A8E', '#D7C27D'];
 
 console.log('Seed:', SEED);
