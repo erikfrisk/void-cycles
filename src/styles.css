@@ -2,10 +2,23 @@ html,
 body {
   height: 100%;
   overflow: hidden;
-  background-color: #ccc;
+  background-color: #ddd;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #canvas-wrapper {
   width: 100vw;
   height: 100vw;
+}
+
+@media all and (orientation: landscape) {
+  #canvas-wrapper {
+    width: 100vh;
+    height: 100vh;
+  }
 }

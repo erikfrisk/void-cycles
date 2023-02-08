@@ -8,16 +8,20 @@ import { transparentize } from 'color2k';
 // [x] Make circles wiggle
 // [x] Possibly add fraying to the outer edges of circles (UPDATE: NO!)
 // [x] Fix resize
-// [ ] Add query string param for turning off animation
-// [ ] Refactor features and make simple iterations more rare
-// [ ] Add fxhash seed
-// [ ] Center canvas in window
-// [ ] Fade in on load
-// [ ] Refactor moveSpeed (two rotation speeds in different formats)
+// [x] Add fxhash seed
+// [x] Center canvas in window
+// [x] Give it bound height on wide screens
 // [ ] Refactor circle/portal names
-// [ ] Give it bound height on wide screens
+// [ ] Refactor moveSpeed (two rotation speeds in different formats)
+// [ ] Refactor features and make simple iterations more rare
+// [ ] Fade in on load
 // [ ] Give lines a minimum thickness when canvas is small
 // [ ] If animation is turned off, make sure it doesn't animate when resized
+// [ ] Don't allow only darker blue (pick color combos)
+// [ ] Change colors?
+// [ ] Add query string param for turning off animation
+// [ ] Set background color and padding with query string params
+// [ ] Set line thickness with query string params
 
 const SEED = (window as any).fxhash;
 // const SEED = 'oozo2eYjpL8wbrVtHbfL9N8CEUaENiMqzLU6voWyCb9nVDK4Bru';
@@ -32,7 +36,7 @@ const getRandomIntBetween = (min, max) => Math.round(min + (max - min) * rng());
 const gaussianRng = (res = 10) =>
   [...Array(res)].reduce((r) => r + rng(), 0) / res;
 
-const space = new CanvasSpace('#hello');
+const space = new CanvasSpace('#empty-portals');
 space.setup({ bgcolor: COLORS[0], retina: true, resize: true });
 const form = space.getForm();
 
