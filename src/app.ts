@@ -13,9 +13,9 @@ import { transparentize } from 'color2k';
 // [x] Give it bound height on wide screens
 // [x] Refactor circle/portal names
 // [x] Refactor moveSpeed (two rotation speeds in different formats)
-// [ ] Refactor features and make simple iterations more rare
 // [ ] Fade in on load
 // [ ] Give lines a minimum thickness when canvas is small
+// [ ] Refactor features and make simple iterations more rare
 // [ ] If animation is turned off, make sure it doesn't animate when resized
 // [ ] Don't allow only darker blue (pick color combos)
 // [ ] Change colors?
@@ -102,6 +102,9 @@ const getPortalFromParams = (params, bound) => {
   };
 };
 
+const getAngleFromDirectionAndTime = (direction, rotationTime, time) =>
+  direction * -((time % rotationTime) / rotationTime) * 2 * Math.PI;
+
 let portals;
 space.add({
   start: (bound) => {
@@ -113,19 +116,21 @@ space.add({
     portals.forEach((c) => {
       const moveVector = Line.fromAngle(
         new Pt(0, 0),
-        c.rotationDirection *
-          -((time % c.moveRotationTime) / c.moveRotationTime) *
-          2 *
-          Math.PI,
+        getAngleFromDirectionAndTime(
+          c.rotationDirection,
+          c.moveRotationTime,
+          time
+        ),
         c.moveDistance
       )[1];
       c.lines.forEach(({ line, trans }) => {
         const _l: Group = line.clone();
         _l.rotate2D(
-          c.rotationDirection *
-            -((time % c.rotationTime) / c.rotationTime) *
-            2 *
-            Math.PI,
+          getAngleFromDirectionAndTime(
+            c.rotationDirection,
+            c.rotationTime,
+            time
+          ),
           c.pCenter
         );
         _l.moveBy(moveVector);
