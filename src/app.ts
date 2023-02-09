@@ -14,18 +14,21 @@ import { transparentize } from 'color2k';
 // [x] Refactor circle/portal names
 // [x] Refactor moveSpeed (two rotation speeds in different formats)
 // [x] Fade in on load
-// [ ] Give lines a minimum thickness when canvas is small
+// [x] Give lines a minimum thickness when canvas is small
+// [x] Add query string param for turning off animation
+// [x] If animation is turned off, make sure it doesn't animate when resized
 // [ ] Refactor features and make simple iterations more rare
-// [ ] If animation is turned off, make sure it doesn't animate when resized
 // [ ] Don't allow only darker blue (pick color combos)
-// [ ] Change colors?
-// [ ] Add query string param for turning off animation
 // [ ] Set background color and padding with query string params
-// [ ] Set line thickness with query string params
+// [ ] Change colors?
 // [ ] Test on mobile
+
+// Available query string parameters:
+// animate=false
 
 const SEED = (window as any).fxhash;
 // const SEED = 'oozo2eYjpL8wbrVtHbfL9N8CEUaENiMqzLU6voWyCb9nVDK4Bru';
+// const SEED = 'oofHyx89E4ZNbRPgKSjSxNx3CvRdDXGzykDuHkFsCc3cSkHzWzi';
 const COLORS = ['#130325', '#BE4B88', '#00A1D6', '#006A8E', '#D7C27D'];
 
 console.log('Seed:', SEED);
@@ -41,7 +44,11 @@ const space = new CanvasSpace('#empty-portals');
 space.setup({ bgcolor: COLORS[0], retina: true, resize: true });
 const form = space.getForm();
 
-const transparentizeFactor = getRandomBetween(0.2, 0.6);
+const qsParams = new URLSearchParams(window.location.search);
+
+const isAnimate = (qsParams.get('animate') || '').toLowerCase() !== 'false';
+console.log(isAnimate);
+const transparentizeFactor = getRandomBetween(0.2, 0.5);
 const col = [
   COLORS[getRandomIntBetween(1, 4)],
   COLORS[getRandomIntBetween(1, 4)],
@@ -123,44 +130,53 @@ space.add({
   animate: (time) => {
     if (!startTime) startTime = time;
     portals.forEach((c, i) => {
-      const moveVector = Line.fromAngle(
-        new Pt(0, 0),
-        getAngleFromDirectionAndTime(
-          c.rotationDirection,
-          c.moveRotationTime,
-          time
-        ),
-        c.moveDistance
-      )[1];
-      c.lines.forEach(({ line, trans }) => {
-        const _l: Group = line.clone();
-        _l.rotate2D(
+      if (isAnimate) {
+        const moveVector = Line.fromAngle(
+          new Pt(0, 0),
           getAngleFromDirectionAndTime(
             c.rotationDirection,
-            c.rotationTime,
+            c.moveRotationTime,
             time
           ),
-          c.pCenter
-        );
-        _l.moveBy(moveVector);
+          c.moveDistance
+        )[1];
+        c.lines.forEach(({ line, trans }) => {
+          const _l: Group = line.clone();
+          _l.rotate2D(
+            getAngleFromDirectionAndTime(
+              c.rotationDirection,
+              c.rotationTime,
+              time
+            ),
+            c.pCenter
+          );
+          _l.moveBy(moveVector);
 
-        // Fade in portals
-        const portalStartTime = startTime + i * (fadeTime + fadeStagger);
-        let alpha = 0;
-        if (time > portalStartTime && time < portalStartTime + fadeTime) {
-          alpha = (time - portalStartTime) / fadeTime;
-        } else if (time >= portalStartTime + fadeTime) {
-          alpha = 1;
-        }
+          // Fade in portals
+          const portalStartTime = startTime + i * (fadeTime + fadeStagger);
+          let alpha = 0;
+          if (time > portalStartTime && time < portalStartTime + fadeTime) {
+            alpha = (time - portalStartTime) / fadeTime;
+          } else if (time >= portalStartTime + fadeTime) {
+            alpha = 1;
+          }
 
-        // Render
-        form
-          .strokeOnly(
-            transparentize(c.color, mapNumToRange(alpha, [0, 1], [1, trans])),
-            c.lineThickness
-          )
-          .line(_l);
-      });
+          // Render
+          form
+            .strokeOnly(
+              transparentize(c.color, mapNumToRange(alpha, [0, 1], [1, trans])),
+              c.lineThickness
+            )
+            .line(_l);
+        });
+      } else {
+        c.lines.forEach(({ line, trans }) => {
+          // Render
+          form
+            .strokeOnly(transparentize(c.color, trans), c.lineThickness)
+            .line(line);
+        });
+      }
     });
   },
   resize: (bound) => {
@@ -170,4 +186,8 @@ space.add({
   },
 });
 
-space.play();
+if (isAnimate) {
+  space.play();
+} else {
+  space.playOnce();
+}
