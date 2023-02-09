@@ -11,8 +11,8 @@ import { transparentize } from 'color2k';
 // [x] Add fxhash seed
 // [x] Center canvas in window
 // [x] Give it bound height on wide screens
-// [ ] Refactor circle/portal names
-// [ ] Refactor moveSpeed (two rotation speeds in different formats)
+// [x] Refactor circle/portal names
+// [x] Refactor moveSpeed (two rotation speeds in different formats)
 // [ ] Refactor features and make simple iterations more rare
 // [ ] Fade in on load
 // [ ] Give lines a minimum thickness when canvas is small
@@ -22,6 +22,7 @@ import { transparentize } from 'color2k';
 // [ ] Add query string param for turning off animation
 // [ ] Set background color and padding with query string params
 // [ ] Set line thickness with query string params
+// [ ] Test on mobile
 
 const SEED = (window as any).fxhash;
 // const SEED = 'oozo2eYjpL8wbrVtHbfL9N8CEUaENiMqzLU6voWyCb9nVDK4Bru';
@@ -45,7 +46,7 @@ const col = [
   COLORS[getRandomIntBetween(1, 4)],
   COLORS[getRandomIntBetween(1, 4)],
 ].sort();
-const N_CIRCLES = getRandomIntBetween(3, 6);
+const nPortals = getRandomIntBetween(3, 6);
 
 const getRandomPortalParams = () => {
   const nLines = getRandomIntBetween(100, 200);
@@ -56,10 +57,10 @@ const getRandomPortalParams = () => {
     },
     radiusDivisor: getRandomBetween(0.8, 5),
     color: col[getRandomIntBetween(0, 1)],
-    rotationSpeed: getRandomBetween(0.00001, 0.00003),
+    rotationTime: getRandomBetween(180 * 1000, 540 * 1000),
     rotationDirection: [-1, 1][getRandomIntBetween(0, 1)],
     moveDistanceDivisor: getRandomBetween(50, 100),
-    moveSpeed: getRandomBetween(30000, 100000),
+    moveRotationTime: getRandomBetween(30 * 1000, 100 * 1000),
     nLines,
     lineRotationFactor: getRandomBetween(0.2, 0.27),
     lineThicknesDivisor: 800,
@@ -69,7 +70,7 @@ const getRandomPortalParams = () => {
   };
 };
 
-const circleParams = [...Array(N_CIRCLES)].map(getRandomPortalParams);
+const portalsParams = [...Array(nPortals)].map(getRandomPortalParams);
 
 const getPortalFromParams = (params, bound) => {
   const pCenter = new Pt(
@@ -90,7 +91,6 @@ const getPortalFromParams = (params, bound) => {
         radius
       );
       l[0] = l.centroid();
-      // l.scale(getRandomBetween(1, 1.1), l[0]);
       l.rotate2D(
         params.rotationDirection * 2 * Math.PI * params.lineRotationFactor
       );
@@ -102,27 +102,33 @@ const getPortalFromParams = (params, bound) => {
   };
 };
 
-let circles;
+let portals;
 space.add({
   start: (bound) => {
-    circles = circleParams.map((portalParams) =>
+    portals = portalsParams.map((portalParams) =>
       getPortalFromParams(portalParams, bound)
     );
   },
   animate: (time) => {
-    circles.forEach((c) => {
-      const movedPCenter = Line.fromAngle(
+    portals.forEach((c) => {
+      const moveVector = Line.fromAngle(
         new Pt(0, 0),
         c.rotationDirection *
-          -((time % c.moveSpeed) / c.moveSpeed) *
+          -((time % c.moveRotationTime) / c.moveRotationTime) *
           2 *
           Math.PI,
         c.moveDistance
       )[1];
       c.lines.forEach(({ line, trans }) => {
         const _l: Group = line.clone();
-        _l.moveBy(movedPCenter);
-        _l.rotate2D(c.rotationDirection * -time * c.rotationSpeed, c.pCenter);
+        _l.rotate2D(
+          c.rotationDirection *
+            -((time % c.rotationTime) / c.rotationTime) *
+            2 *
+            Math.PI,
+          c.pCenter
+        );
+        _l.moveBy(moveVector);
         form
           .strokeOnly(transparentize(c.color, trans), c.lineThickness)
           .line(_l);
@@ -130,7 +136,7 @@ space.add({
     });
   },
   resize: (bound) => {
-    circles = circleParams.map((portalParams) =>
+    portals = portalsParams.map((portalParams) =>
       getPortalFromParams(portalParams, bound)
     );
   },
