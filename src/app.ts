@@ -1,6 +1,6 @@
 // https://coolors.co/130325-be4b88-00a1d6-004d66-d7c27d
 
-import { CanvasSpace, Pt, Group, Line, Bound } from 'pts';
+import { CanvasSpace, Pt, Group, Line } from 'pts';
 import seedrandom from 'seedrandom';
 import { transparentize } from 'color2k';
 
@@ -13,7 +13,7 @@ import { transparentize } from 'color2k';
 // [x] Give it bound height on wide screens
 // [x] Refactor circle/portal names
 // [x] Refactor moveSpeed (two rotation speeds in different formats)
-// [ ] Fade in on load
+// [x] Fade in on load
 // [ ] Give lines a minimum thickness when canvas is small
 // [ ] Refactor features and make simple iterations more rare
 // [ ] If animation is turned off, make sure it doesn't animate when resized
@@ -105,7 +105,15 @@ const getPortalFromParams = (params, bound) => {
 const getAngleFromDirectionAndTime = (direction, rotationTime, time) =>
   direction * -((time % rotationTime) / rotationTime) * 2 * Math.PI;
 
+const mapNumToRange = (number, [inMin, inMax], [outMin, outMax]) => {
+  return ((number - inMin) / (inMax - inMin)) * (outMax - outMin) + outMin;
+};
+
+const fadeTime = 2000;
+const fadeStagger = -1000;
+
 let portals;
+let startTime;
 space.add({
   start: (bound) => {
     portals = portalsParams.map((portalParams) =>
@@ -113,7 +121,8 @@ space.add({
     );
   },
   animate: (time) => {
-    portals.forEach((c) => {
+    if (!startTime) startTime = time;
+    portals.forEach((c, i) => {
       const moveVector = Line.fromAngle(
         new Pt(0, 0),
         getAngleFromDirectionAndTime(
@@ -134,8 +143,22 @@ space.add({
           c.pCenter
         );
         _l.moveBy(moveVector);
+
+        // Fade in portals
+        const portalStartTime = startTime + i * (fadeTime + fadeStagger);
+        let alpha = 0;
+        if (time > portalStartTime && time < portalStartTime + fadeTime) {
+          alpha = (time - portalStartTime) / fadeTime;
+        } else if (time >= portalStartTime + fadeTime) {
+          alpha = 1;
+        }
+
+        // Render
         form
-          .strokeOnly(transparentize(c.color, trans), c.lineThickness)
+          .strokeOnly(
+            transparentize(c.color, mapNumToRange(alpha, [0, 1], [1, trans])),
+            c.lineThickness
+          )
           .line(_l);
       });
     });
