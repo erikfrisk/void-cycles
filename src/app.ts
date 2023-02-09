@@ -23,8 +23,9 @@ import getFxhashFeatures from './getFxhashFeatures';
 // [x] Give lines a minimum thickness when canvas is small
 // [x] Add query string param for turning off animation
 // [x] If animation is turned off, make sure it doesn't animate when resized
-// [ ] Refactor features and make simple iterations more rare
-// [ ] Don't allow only darker blue (pick color combos)
+// [ ] Add features
+// [ ] Make simple iterations more rare
+// [ ] Don't allow only darker blue (pick color combos) ?
 // [ ] Set background color and padding with query string params
 // [ ] Change colors?
 // [ ] Test on mobile
@@ -39,9 +40,9 @@ const SEED = (window as any).fxhash;
 // const SEED = 'oozo2eYjpL8wbrVtHbfL9N8CEUaENiMqzLU6voWyCb9nVDK4Bru';
 // const SEED = 'oofHyx89E4ZNbRPgKSjSxNx3CvRdDXGzykDuHkFsCc3cSkHzWzi';
 // const SEED = 'oopqceqW2E9m6ybHTj6vF4enptT1ZvVa9UgcJ4nan8jR2Linigi';
-const COLORS = ['#130325', '#BE4B88', '#00A1D6', '#006A8E', '#D7C27D'];
 
 console.log('Seed:', SEED);
+
 const rng = seedrandom(SEED);
 
 const { getRandomBetween, getRandomIntBetween, gaussianRng } =
@@ -55,6 +56,7 @@ const isAnimate = (qsParams.get('animate') || '').toLowerCase() !== 'false';
 // Generate parameters and features
 // --------------------------------------------
 
+const COLORS = ['#130325', '#BE4B88', '#00A1D6', '#006A8E', '#D7C27D'];
 const nPortals = getRandomIntBetween(3, 6);
 const transparentizeFactor = getRandomBetween(0.2, 0.5);
 const col = [
