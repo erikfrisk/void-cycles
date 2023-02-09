@@ -7,3 +7,6 @@ export const getRngHelpers = (rng) => ({
 export const mapNumToRange = (number, [inMin, inMax], [outMin, outMax]) => {
   return ((number - inMin) / (inMax - inMin)) * (outMax - outMin) + outMin;
 };
+
+export const getAngleFromDirectionAndTime = (direction, rotationTime, time) =>
+  direction * -((time % rotationTime) / rotationTime) * 2 * Math.PI;

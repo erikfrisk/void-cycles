@@ -3,7 +3,11 @@
 import { CanvasSpace, Pt, Group, Line } from 'pts';
 import seedrandom from 'seedrandom';
 import { transparentize } from 'color2k';
-import { getRngHelpers, mapNumToRange } from './helpers';
+import {
+  getAngleFromDirectionAndTime,
+  getRngHelpers,
+  mapNumToRange,
+} from './helpers';
 import getFxhashFeatures from './getFxhashFeatures';
 
 // Todo:
@@ -34,6 +38,7 @@ import getFxhashFeatures from './getFxhashFeatures';
 const SEED = (window as any).fxhash;
 // const SEED = 'oozo2eYjpL8wbrVtHbfL9N8CEUaENiMqzLU6voWyCb9nVDK4Bru';
 // const SEED = 'oofHyx89E4ZNbRPgKSjSxNx3CvRdDXGzykDuHkFsCc3cSkHzWzi';
+// const SEED = 'oopqceqW2E9m6ybHTj6vF4enptT1ZvVa9UgcJ4nan8jR2Linigi';
 const COLORS = ['#130325', '#BE4B88', '#00A1D6', '#006A8E', '#D7C27D'];
 
 console.log('Seed:', SEED);
@@ -42,19 +47,20 @@ const rng = seedrandom(SEED);
 const { getRandomBetween, getRandomIntBetween, gaussianRng } =
   getRngHelpers(rng);
 
-const space = new CanvasSpace('#empty-portals');
-space.setup({ bgcolor: COLORS[0], retina: true, resize: true });
-const form = space.getForm();
-
 const qsParams = new URLSearchParams(window.location.search);
 
 const isAnimate = (qsParams.get('animate') || '').toLowerCase() !== 'false';
+
+// --------------------------------------------
+// Generate parameters and features
+// --------------------------------------------
+
+const nPortals = getRandomIntBetween(3, 6);
 const transparentizeFactor = getRandomBetween(0.2, 0.5);
 const col = [
   COLORS[getRandomIntBetween(1, 4)],
   COLORS[getRandomIntBetween(1, 4)],
 ].sort();
-const nPortals = getRandomIntBetween(3, 6);
 
 const getRandomPortalParams = () => {
   const nLines = getRandomIntBetween(100, 200);
@@ -88,6 +94,14 @@ const portalsParams = [...Array(nPortals)].map(getRandomPortalParams);
 
 console.log('Features', (window as any).$fxhashFeatures);
 
+// --------------------------------------------
+// Render and animate
+// --------------------------------------------
+
+const space = new CanvasSpace('#empty-portals');
+space.setup({ bgcolor: COLORS[0], retina: true, resize: true });
+const form = space.getForm();
+
 const getPortalFromParams = (params, bound) => {
   const pCenter = new Pt(
     bound.width * params.pCenterMultipliers.x,
@@ -117,9 +131,6 @@ const getPortalFromParams = (params, bound) => {
     }),
   };
 };
-
-const getAngleFromDirectionAndTime = (direction, rotationTime, time) =>
-  direction * -((time % rotationTime) / rotationTime) * 2 * Math.PI;
 
 const fadeTime = 2000;
 const fadeStagger = -1000;
