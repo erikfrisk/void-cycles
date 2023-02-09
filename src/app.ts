@@ -22,6 +22,9 @@ import { transparentize } from 'color2k';
 // [ ] Set background color and padding with query string params
 // [ ] Change colors?
 // [ ] Test on mobile
+// [ ] Make sure built paths are relative
+// [ ] Don't animate if isFxpreview is true
+// [ ] Add call to fxpreview() when code is ready to be captured
 
 // Available query string parameters:
 // animate=false
@@ -40,6 +43,10 @@ const getRandomIntBetween = (min, max) => Math.round(min + (max - min) * rng());
 const gaussianRng = (res = 10) =>
   [...Array(res)].reduce((r) => r + rng(), 0) / res;
 
+const mapNumToRange = (number, [inMin, inMax], [outMin, outMax]) => {
+  return ((number - inMin) / (inMax - inMin)) * (outMax - outMin) + outMin;
+};
+
 const space = new CanvasSpace('#empty-portals');
 space.setup({ bgcolor: COLORS[0], retina: true, resize: true });
 const form = space.getForm();
@@ -47,7 +54,6 @@ const form = space.getForm();
 const qsParams = new URLSearchParams(window.location.search);
 
 const isAnimate = (qsParams.get('animate') || '').toLowerCase() !== 'false';
-console.log(isAnimate);
 const transparentizeFactor = getRandomBetween(0.2, 0.5);
 const col = [
   COLORS[getRandomIntBetween(1, 4)],
@@ -78,6 +84,66 @@ const getRandomPortalParams = () => {
 };
 
 const portalsParams = [...Array(nPortals)].map(getRandomPortalParams);
+
+const averagePortalNLines =
+  portalsParams.reduce((x, { nLines }) => x + nLines, 0) / nPortals;
+const averagePortalRotationTime =
+  portalsParams.reduce((x, { rotationTime }) => x + rotationTime, 0) / nPortals;
+const averagePortalRotationTimeFactor = mapNumToRange(
+  averagePortalRotationTime,
+  [180 * 1000, 540 * 1000],
+  [0, 1]
+);
+const averagePortalMoveRotationTime =
+  portalsParams.reduce((x, { moveRotationTime }) => x + moveRotationTime, 0) /
+  nPortals;
+const averagePortalMoveRotationTimeFactor = mapNumToRange(
+  averagePortalMoveRotationTime,
+  [30 * 1000, 100 * 1000],
+  [0, 1]
+);
+const stillnessFactor =
+  (averagePortalRotationTimeFactor + averagePortalMoveRotationTimeFactor) / 2;
+
+(window as any).$fxhashFeatures = {
+  Emptiness: {
+    3: 'Very high',
+    4: 'High',
+    5: 'Medium',
+    6: 'Low',
+  }[nPortals],
+  Entropy:
+    transparentizeFactor <= 0.3
+      ? 'High'
+      : transparentizeFactor <= 0.4
+      ? 'Medium'
+      : 'Low',
+  Density:
+    averagePortalNLines <= 133
+      ? 'Low'
+      : averagePortalNLines <= 167
+      ? 'Medium'
+      : 'High',
+  Stillness:
+    stillnessFactor <= 0.33
+      ? 'Low'
+      : stillnessFactor <= 0.67
+      ? 'Medium'
+      : 'High',
+  // Palette: Faded blue | Blue on blue | Vibrant blue | Magenta | Yellow | Blue on yellow | Blue on magenta | Magenta on yellow
+};
+console.log('nPortals', nPortals);
+console.log('transparentizeFactor', transparentizeFactor);
+console.log('averagePortalNLines', averagePortalNLines);
+console.log('averagePortalRotationTime', averagePortalRotationTime);
+console.log('averagePortalRotationTimeFactor', averagePortalRotationTimeFactor);
+console.log('averagePortalMoveRotationTime', averagePortalMoveRotationTime);
+console.log(
+  'averagePortalMoveRotationTimeFactor',
+  averagePortalMoveRotationTimeFactor
+);
+console.log('stillnessFactor', stillnessFactor);
+console.log('Features', (window as any).$fxhashFeatures);
 
 const getPortalFromParams = (params, bound) => {
   const pCenter = new Pt(
@@ -111,10 +177,6 @@ const getPortalFromParams = (params, bound) => {
 
 const getAngleFromDirectionAndTime = (direction, rotationTime, time) =>
   direction * -((time % rotationTime) / rotationTime) * 2 * Math.PI;
-
-const mapNumToRange = (number, [inMin, inMax], [outMin, outMax]) => {
-  return ((number - inMin) / (inMax - inMin)) * (outMax - outMin) + outMin;
-};
 
 const fadeTime = 2000;
 const fadeStagger = -1000;
