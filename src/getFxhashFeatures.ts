@@ -49,32 +49,32 @@ export default (nPortals, portalsParams, transparentizeFactor) => {
   console.log('iterationColorNames', iterationColorNames);
 
   // paletteColors:
-  //   fadedBlue
+  //   gentleBlue
   //   vibrantBlue
   //   magenta
   //   yellow
 
-  let palette;
-  if (_.isEqual(iterationColorNames, ['fadedBlue'])) {
-    palette = 'Faded blue';
-  } else if (_.isEqual(iterationColorNames, ['fadedBlue', 'vibrantBlue'])) {
-    palette = 'Blue';
-  } else if (_.isEqual(iterationColorNames, ['fadedBlue', 'magenta'])) {
-    palette = 'Faded blue, magenta';
-  } else if (_.isEqual(iterationColorNames, ['fadedBlue', 'yellow'])) {
-    palette = 'Faded blue, yellow';
+  let color;
+  if (_.isEqual(iterationColorNames, ['gentleBlue'])) {
+    color = 'Blue';
+  } else if (_.isEqual(iterationColorNames, ['gentleBlue', 'vibrantBlue'])) {
+    color = 'Blue';
+  } else if (_.isEqual(iterationColorNames, ['gentleBlue', 'magenta'])) {
+    color = 'Blue, magenta';
+  } else if (_.isEqual(iterationColorNames, ['gentleBlue', 'yellow'])) {
+    color = 'Blue, yellow';
   } else if (_.isEqual(iterationColorNames, ['vibrantBlue'])) {
-    palette = 'Vibrant blue';
+    color = 'Blue';
   } else if (_.isEqual(iterationColorNames, ['magenta', 'vibrantBlue'])) {
-    palette = 'Vibrant blue, magenta';
+    color = 'Blue, magenta';
   } else if (_.isEqual(iterationColorNames, ['vibrantBlue', 'yellow'])) {
-    palette = 'Vibrant blue, yellow';
+    color = 'Blue, yellow';
   } else if (_.isEqual(iterationColorNames, ['magenta'])) {
-    palette = 'Magenta';
+    color = 'Magenta';
   } else if (_.isEqual(iterationColorNames, ['magenta', 'yellow'])) {
-    palette = 'Magenta, yellow';
+    color = 'Magenta, yellow';
   } else if (_.isEqual(iterationColorNames, ['yellow'])) {
-    palette = 'Yellow';
+    color = 'Yellow';
   }
 
   return {
@@ -102,6 +102,6 @@ export default (nPortals, portalsParams, transparentizeFactor) => {
         : stillnessFactor <= 0.67
         ? 'Medium'
         : 'High',
-    Palette: palette,
+    Color: color,
   };
 };

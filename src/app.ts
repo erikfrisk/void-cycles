@@ -59,7 +59,7 @@ const isAnimate = (qsParams.get('animate') || '').toLowerCase() !== 'false';
 const COLORS = ['#130325', '#BE4B88', '#00A1D6', '#006A8E', '#D7C27D'];
 
 const paletteColors = {
-  fadedBlue: COLORS[3],
+  gentleBlue: COLORS[3],
   vibrantBlue: COLORS[2],
   magenta: COLORS[1],
   yellow: COLORS[4],
@@ -108,7 +108,7 @@ console.log('Emptiness:', (window as any).$fxhashFeatures.Emptiness);
 console.log('Entropy:', (window as any).$fxhashFeatures.Entropy);
 console.log('Density:', (window as any).$fxhashFeatures.Density);
 console.log('Stillness:', (window as any).$fxhashFeatures.Stillness);
-console.log('Palette:', (window as any).$fxhashFeatures.Palette);
+console.log('Color:', (window as any).$fxhashFeatures.Color);
 
 // --------------------------------------------
 // Render and animate
