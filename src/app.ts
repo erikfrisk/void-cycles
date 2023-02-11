@@ -57,11 +57,20 @@ const isAnimate = (qsParams.get('animate') || '').toLowerCase() !== 'false';
 // --------------------------------------------
 
 const COLORS = ['#130325', '#BE4B88', '#00A1D6', '#006A8E', '#D7C27D'];
+
+const paletteColors = {
+  fadedBlue: COLORS[3],
+  vibrantBlue: COLORS[2],
+  magenta: COLORS[1],
+  yellow: COLORS[4],
+};
+const paletteColorNames = Object.keys(paletteColors);
+
 const nPortals = getRandomIntBetween(3, 6);
 const transparentizeFactor = getRandomBetween(0.2, 0.5);
-const col = [
-  COLORS[getRandomIntBetween(1, 4)],
-  COLORS[getRandomIntBetween(1, 4)],
+const iterationColorNames = [
+  paletteColorNames[getRandomIntBetween(0, 3)],
+  paletteColorNames[getRandomIntBetween(0, 3)],
 ].sort();
 
 const getRandomPortalParams = () => {
@@ -72,7 +81,7 @@ const getRandomPortalParams = () => {
       y: gaussianRng(),
     },
     radiusDivisor: getRandomBetween(0.8, 5),
-    color: col[getRandomIntBetween(0, 1)],
+    colorName: iterationColorNames[getRandomIntBetween(0, 1)],
     rotationTime: getRandomBetween(180 * 1000, 540 * 1000),
     rotationDirection: [-1, 1][getRandomIntBetween(0, 1)],
     moveDistanceDivisor: getRandomBetween(50, 100),
@@ -94,7 +103,12 @@ const portalsParams = [...Array(nPortals)].map(getRandomPortalParams);
   transparentizeFactor
 );
 
-console.log('Features', (window as any).$fxhashFeatures);
+console.log('Features:');
+console.log('Emptiness:', (window as any).$fxhashFeatures.Emptiness);
+console.log('Entropy:', (window as any).$fxhashFeatures.Entropy);
+console.log('Density:', (window as any).$fxhashFeatures.Density);
+console.log('Stillness:', (window as any).$fxhashFeatures.Stillness);
+console.log('Palette:', (window as any).$fxhashFeatures.Palette);
 
 // --------------------------------------------
 // Render and animate
@@ -182,7 +196,10 @@ space.add({
           // Render
           form
             .strokeOnly(
-              transparentize(c.color, mapNumToRange(alpha, [0, 1], [1, trans])),
+              transparentize(
+                paletteColors[c.colorName],
+                mapNumToRange(alpha, [0, 1], [1, trans])
+              ),
               c.lineThickness
             )
             .line(_l);
@@ -191,7 +208,10 @@ space.add({
         c.lines.forEach(({ line, trans }) => {
           // Render
           form
-            .strokeOnly(transparentize(c.color, trans), c.lineThickness)
+            .strokeOnly(
+              transparentize(paletteColors[c.colorName], trans),
+              c.lineThickness
+            )
             .line(line);
         });
       }

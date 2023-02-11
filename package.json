@@ -9,10 +9,12 @@
   "author": "Erik Frisk",
   "license": "ISC",
   "devDependencies": {
+    "@types/lodash": "^4.14.191",
     "parcel": "^2.8.3"
   },
   "dependencies": {
     "color2k": "^2.0.1",
+    "lodash": "^4.17.21",
     "normalize.css": "^8.0.1",
     "pts": "^0.11.3",
     "seedrandom": "^3.0.5"

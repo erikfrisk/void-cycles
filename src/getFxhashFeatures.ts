@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { mapNumToRange } from './helpers';
 
 export default (nPortals, portalsParams, transparentizeFactor) => {
@@ -25,6 +26,12 @@ export default (nPortals, portalsParams, transparentizeFactor) => {
   const stillnessFactor =
     (averagePortalRotationTimeFactor + averagePortalMoveRotationTimeFactor) / 2;
 
+  const iterationColorNames = _(portalsParams)
+    .map('colorName')
+    .uniq()
+    .sort()
+    .value();
+
   console.log('nPortals', nPortals);
   console.log('transparentizeFactor', transparentizeFactor);
   console.log('averagePortalNLines', averagePortalNLines);
@@ -39,6 +46,36 @@ export default (nPortals, portalsParams, transparentizeFactor) => {
     averagePortalMoveRotationTimeFactor
   );
   console.log('stillnessFactor', stillnessFactor);
+  console.log('iterationColorNames', iterationColorNames);
+
+  // paletteColors:
+  //   fadedBlue
+  //   vibrantBlue
+  //   magenta
+  //   yellow
+
+  let palette;
+  if (_.isEqual(iterationColorNames, ['fadedBlue'])) {
+    palette = 'Faded blue';
+  } else if (_.isEqual(iterationColorNames, ['fadedBlue', 'vibrantBlue'])) {
+    palette = 'Blue';
+  } else if (_.isEqual(iterationColorNames, ['fadedBlue', 'magenta'])) {
+    palette = 'Faded blue, magenta';
+  } else if (_.isEqual(iterationColorNames, ['fadedBlue', 'yellow'])) {
+    palette = 'Faded blue, yellow';
+  } else if (_.isEqual(iterationColorNames, ['vibrantBlue'])) {
+    palette = 'Vibrant blue';
+  } else if (_.isEqual(iterationColorNames, ['magenta', 'vibrantBlue'])) {
+    palette = 'Vibrant blue, magenta';
+  } else if (_.isEqual(iterationColorNames, ['vibrantBlue', 'yellow'])) {
+    palette = 'Vibrant blue, yellow';
+  } else if (_.isEqual(iterationColorNames, ['magenta'])) {
+    palette = 'Magenta';
+  } else if (_.isEqual(iterationColorNames, ['magenta', 'yellow'])) {
+    palette = 'Magenta, yellow';
+  } else if (_.isEqual(iterationColorNames, ['yellow'])) {
+    palette = 'Yellow';
+  }
 
   return {
     Emptiness: {
@@ -65,6 +102,6 @@ export default (nPortals, portalsParams, transparentizeFactor) => {
         : stillnessFactor <= 0.67
         ? 'Medium'
         : 'High',
-    // Palette: Faded blue | Blue on blue | Vibrant blue | Magenta | Yellow | Blue on yellow | Blue on magenta | Magenta on yellow
+    Palette: palette,
   };
 };
