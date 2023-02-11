@@ -66,8 +66,10 @@ const paletteColors = {
 };
 const paletteColorNames = Object.keys(paletteColors);
 
-const nPortals = getRandomIntBetween(3, 6);
-const transparentizeFactor = getRandomBetween(0.2, 0.5);
+const nPortals = [3, 4, 4, 5, 5, 5, 6, 6, 6][getRandomIntBetween(0, 8)];
+const transparentizeFactor = [
+  0.2, 0.3, 0.3, 0.4, 0.4, 0.4, 0.5, 0.5, 0.5, 0.6, 0.6, 0.6,
+][getRandomIntBetween(0, 11)];
 const iterationColorNames = [
   paletteColorNames[getRandomIntBetween(0, 3)],
   paletteColorNames[getRandomIntBetween(0, 3)],
