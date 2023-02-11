@@ -32,22 +32,6 @@ export default (nPortals, portalsParams, transparentizeFactor) => {
     .sort()
     .value();
 
-  console.log('nPortals', nPortals);
-  console.log('transparentizeFactor', transparentizeFactor);
-  console.log('averagePortalNLines', averagePortalNLines);
-  console.log('averagePortalRotationTime', averagePortalRotationTime);
-  console.log(
-    'averagePortalRotationTimeFactor',
-    averagePortalRotationTimeFactor
-  );
-  console.log('averagePortalMoveRotationTime', averagePortalMoveRotationTime);
-  console.log(
-    'averagePortalMoveRotationTimeFactor',
-    averagePortalMoveRotationTimeFactor
-  );
-  console.log('stillnessFactor', stillnessFactor);
-  console.log('iterationColorNames', iterationColorNames);
-
   // paletteColors:
   //   gentleBlue
   //   vibrantBlue
@@ -85,7 +69,7 @@ export default (nPortals, portalsParams, transparentizeFactor) => {
       6: 'Low',
     }[nPortals],
     Entropy:
-      transparentizeFactor <= 0.3
+      transparentizeFactor < 0.3
         ? 'High'
         : transparentizeFactor <= 0.4
         ? 'Medium'
