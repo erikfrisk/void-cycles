@@ -1,3 +1,16 @@
+// Void cycles by Erik Frisk, 2023-02-12
+//
+// Copyright (c) 2023, Erik Frisk
+// All rights reserved.
+//
+// Libraries used (via npm):
+// - parcel (MIT License)
+// - color2k (MIT License)
+// - lodash (MIT License)
+// - normalize.css (MIT License)
+// - pts (Apache License, Version 2.0)
+// - seedrandom (MIT License)
+
 import _ from 'lodash';
 import { mapNumToRange } from './helpers';
 

@@ -1,13 +1,13 @@
 {
-  "name": "empty-portals",
+  "name": "void-cycles",
   "version": "1.0.0",
   "description": "",
   "source": "src/index.html",
   "browserslist": "> 0.5%, last 2 versions, not dead",
   "scripts": {
     "start": "npx parcel src/index.html",
-    "build": "parcel build --no-source-maps --no-optimize --public-url replacethislinewithadot && sed -i '' 's/replacethislinewithadot/./g' dist/index.html",
-    "build-clean": "rm -rf dist && rm -rf .parcel-cache && npm run build",
+    "build": "parcel build --no-source-maps --no-optimize --no-cache --no-scope-hoist --public-url replacethislinewithadot && sed -i '' 's/replacethislinewithadot/./g' dist/index.html",
+    "build-clean": "rm -rf dist/* && rm -rf .parcel-cache && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Erik Frisk",

@@ -1,4 +1,15 @@
-// https://coolors.co/130325-be4b88-00a1d6-004d66-d7c27d
+// Void cycles by Erik Frisk, 2023-02-12
+//
+// Copyright (c) 2023, Erik Frisk
+// All rights reserved.
+//
+// Libraries used (via npm):
+// - parcel (MIT License)
+// - color2k (MIT License)
+// - lodash (MIT License)
+// - normalize.css (MIT License)
+// - pts (Apache License, Version 2.0)
+// - seedrandom (MIT License)
 
 import { CanvasSpace, Pt, Group, Line } from 'pts';
 import seedrandom from 'seedrandom';
@@ -102,7 +113,7 @@ console.log('* Color:', (window as any).$fxhashFeatures.Color);
 // Render and animate
 // --------------------------------------------
 
-const space = new CanvasSpace('#empty-portals');
+const space = new CanvasSpace('#void-cycles');
 space.setup({ bgcolor: COLORS[0], retina: true, resize: true });
 const form = space.getForm();
 
