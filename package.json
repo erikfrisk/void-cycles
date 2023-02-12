@@ -6,7 +6,7 @@
   "browserslist": "> 0.5%, last 2 versions, not dead",
   "scripts": {
     "start": "npx parcel src/index.html",
-    "build": "parcel build --no-source-maps --public-url replacethislinewithadot && sed -i '' 's/replacethislinewithadot/./g' dist/index.html",
+    "build": "parcel build --no-source-maps --no-optimize --public-url replacethislinewithadot && sed -i '' 's/replacethislinewithadot/./g' dist/index.html",
     "build-clean": "rm -rf dist && rm -rf .parcel-cache && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
