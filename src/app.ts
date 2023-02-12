@@ -10,37 +10,11 @@ import {
 } from './helpers';
 import getFxhashFeatures from './getFxhashFeatures';
 
-// Todo:
-// [x] Make circles wiggle
-// [x] Possibly add fraying to the outer edges of circles (UPDATE: NO!)
-// [x] Fix resize
-// [x] Add fxhash seed
-// [x] Center canvas in window
-// [x] Give it bound height on wide screens
-// [x] Refactor circle/portal names
-// [x] Refactor moveSpeed (two rotation speeds in different formats)
-// [x] Fade in on load
-// [x] Give lines a minimum thickness when canvas is small
-// [x] Add query string param for turning off animation
-// [x] If animation is turned off, make sure it doesn't animate when resized
-// [ ] Add features
-// [ ] Make simple iterations more rare
-// [ ] Don't allow only darker blue (pick color combos) ?
-// [ ] Set background color and padding with query string params
-// [ ] Change colors?
-// [ ] Test on mobile
-// [ ] Make sure built paths are relative
-// [ ] Don't animate if isFxpreview is true
-// [ ] Add call to fxpreview() when code is ready to be captured
-
 // Available query string parameters:
 // animate=false
 // background=000
 
 const SEED = (window as any).fxhash;
-// const SEED = 'oozo2eYjpL8wbrVtHbfL9N8CEUaENiMqzLU6voWyCb9nVDK4Bru';
-// const SEED = 'oofHyx89E4ZNbRPgKSjSxNx3CvRdDXGzykDuHkFsCc3cSkHzWzi';
-// const SEED = 'oopqceqW2E9m6ybHTj6vF4enptT1ZvVa9UgcJ4nan8jR2Linigi';
 
 console.log('Seed:', SEED);
 
