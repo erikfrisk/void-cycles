@@ -35,6 +35,7 @@ import getFxhashFeatures from './getFxhashFeatures';
 
 // Available query string parameters:
 // animate=false
+// background=000
 
 const SEED = (window as any).fxhash;
 // const SEED = 'oozo2eYjpL8wbrVtHbfL9N8CEUaENiMqzLU6voWyCb9nVDK4Bru';
@@ -48,9 +49,20 @@ const rng = seedrandom(SEED);
 const { getRandomBetween, getRandomIntBetween, gaussianRng } =
   getRngHelpers(rng);
 
+// --------------------------------------------
+// Query string params
+// --------------------------------------------
+
 const qsParams = new URLSearchParams(window.location.search);
 
-const isAnimate = (qsParams.get('animate') || '').toLowerCase() !== 'false';
+const isAnimate =
+  (qsParams.get('animate') || '').toLowerCase() !== 'false' &&
+  !(window as any).isFxpreview;
+const background = qsParams.get('background');
+
+if (background) {
+  document.body.style.backgroundColor = `#${background}`;
+}
 
 // --------------------------------------------
 // Generate parameters and features

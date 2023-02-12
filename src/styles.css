@@ -2,13 +2,13 @@ html,
 body {
   height: 100%;
   overflow: hidden;
-  background-color: #faf8f0;
 }
 
 body {
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: #faf8f0;
 }
 
 #canvas-wrapper {
