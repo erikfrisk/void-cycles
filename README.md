@@ -1,5 +1,3 @@
-# Art
+# Void Cycles
 
-Reference:
-
-- https://muffinman.io/blog/js-libraries-for-generative-art/
+Void cycles is a minimalistic generative art piece full of subtle variations—some more noticeable than others.
